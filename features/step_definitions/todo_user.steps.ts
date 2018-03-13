@@ -3,7 +3,9 @@ import {listOf} from "../../spec/text";
 import {Start} from "../../screenplay/tasks/start";
 import {AddATodoItem} from "../../screenplay/tasks/add_a_todo_item";
 import {protractor} from "protractor";
-import {BrowseTheWeb} from "serenity-js/lib/serenity-protractor";
+import {BrowseTheWeb, Is, Wait} from "serenity-js/lib/serenity-protractor";
+import {TodoList} from "../../screenplay/components/todo_list";
+import {expect} from "../../spec/expect";
 
 export = function todoUserSteps() {
 
@@ -24,11 +26,11 @@ export = function todoUserSteps() {
 
     this.When(/^s?he adds (.*?) to (?:his|her) list$/, function (itemName: string) {
         return actor.attemptsTo(
-            AddATodoItem.called(itemName)
+            //AddATodoItem.called(itemName)
         )
     });
 
-    this.Then(/^.* todo list should contain (.*?)$/, function (items: string, callback) {
-        callback(null, 'pending');
+    this.Then(/^.* todo list should contain (.*?)$/, function (items: string) {
+        return expect(actor.toSee(TodoList.Items_Displayed)).eventually.deep.equal(listOf(items));
     });
 };

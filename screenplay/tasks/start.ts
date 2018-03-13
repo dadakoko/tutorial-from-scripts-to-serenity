@@ -1,6 +1,7 @@
 import { PerformsTasks, Task } from 'serenity-js/protractor';
 import {AddATodoItem} from "./add_a_todo_item";
-import {Open} from "serenity-js/lib/serenity-protractor";
+import {Is, Open, Wait} from "serenity-js/lib/serenity-protractor";
+import {TodoList} from "../components/todo_list";
 
 export class Start implements Task {
 
@@ -10,7 +11,8 @@ export class Start implements Task {
 
     performAs(actor: PerformsTasks): PromiseLike<void> {    // required by the Task interface
         return actor.attemptsTo(
-            Open.browserOn('/examples/angularjs/'),// delegates the work to lower-level tasks
+            Open.browserOn('/examples/angular2/'),
+            Wait.until(TodoList.What_Needs_To_Be_Done, Is.clickable()),// delegates the work to lower-level tasks
             ...this.addAll(this.items)                          // ``...` is a spread operator,
         );
     }
